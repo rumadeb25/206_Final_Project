@@ -8,41 +8,32 @@ import requests
 import re
 import csv
 
-# base url for census 
 
-base_url = 
-
-conn = sqlite3.connect('')
+conn = sqlite3.connect('census.db')
 cur = conn.cursor()
-
-def setUpDatabase( ):
-    path = os.path.dirname(os.path.abspath(__file__))
-    conn = sqlite3.connect(path+'/'+ 'census.db')
-    cur = conn.cursor()
-    return cur, conn
-
-
-cur.execute("CREATE TABLE IF NOT EXISTS Locations (address TEXT, data TEXT)")
-
 
 # reads from data and adds data to the database
 
-fh = open("  .data")
+file_obj = open("census_data.csv", "r") 
+lnes = file_obj.readlines()[2:]
+counties_list = []
+income_list = []
+insurance_list = []
+for i in lnes:  
+    counties_list.append(i[1].strip())
+    income_list.append(i[250])
+    insurance_list.append(i[382])
+file_obj.close()
 
 
-
-def create_request_url( ):
-
-# getting data from the web 
-# creating an api request with the request url 
-
-    parms = 
-    url =  base_url + parms
-    r = requests.get(url)
-
-    try:
-        dict = json.loads(r.text)
-    except:
-        print("error when reading from url")  
-        dict = {}
-
+cur.execute("CREATE TABLE IF NOT EXISTS Census (county_num INTEGER, county TEXT, income INTEGER, insurance TEXT)")
+for i in range(len(counties_list)):
+    county_num = i
+    for i in counties_list:
+        county = i
+    for i in income_list:
+        income = i
+    for i in insurance_list:
+        insurance = i
+    cur.execute("INSERT INTO Census (county_num, county, income, insurance) VALUES (?,?,?,?)",(county_num, county, income, insurance))
+conn.commit()
