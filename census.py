@@ -8,7 +8,6 @@ import requests
 import re
 import csv
 
-
 conn = sqlite3.connect('census.db')
 cur = conn.cursor()
 
@@ -16,11 +15,9 @@ cur = conn.cursor()
 
 file_obj = open("census_data.csv", "r") 
 reader = csv.reader(file_obj)
-# lnes = file_obj.readlines()[2:]
 counties_list = []
 income_list = []
 insurance_list = []
-tup = tuple()
 tuple_list = []
 counties = []
 income = []
@@ -34,19 +31,29 @@ for i in reader:
     insurance_list = insurance[2:]
 file_obj.close()
 
-cur.execute("DROP TABLE IF EXISTS Census")
-cur.execute("CREATE TABLE IF NOT EXISTS Census (county_num INTEGER, county TEXT, income INTEGER, insurance TEXT)")
+cur.execute("CREATE TABLE IF NOT EXISTS Census (county_num INTEGER, County TEXT, Median_Income INTEGER, With_Health_Insurance INTEGER)")
 count = 0
 for i in range(len(counties_list)):
 
-    # if count > 20 :
-    #     print('Stored 20 items, restart to retrieve more')
-    #     break
+    if count > 20 :
+        print('Stored 20 items, restart to retrieve more')
+        break
 
     county_num = i
 
-    cur.execute("INSERT INTO Census (county_num, county, income, insurance) VALUES (?,?,?,?)",(county_num, counties_list[i], income_list[i], insurance_list[i]))
+    # write something so that duplicate data isnt stored
+    # try:
+    #     data = cur.fetchone()[0]
+    #     print("Found in database ",address)
+    #     continue
+    # except:
+    #     pass
+
+    cur.execute("INSERT INTO Census (county_num, County, Median_Income, With_Health_Insurance) VALUES (?,?,?,?)",(county_num, counties_list[i], income_list[i], insurance_list[i]))
     
-    # count = count + 1
+    count = count + 1
 
 conn.commit()
+
+# second table w shared key?
+# cur.execute("CREATE TABLE IF NOT EXISTS
