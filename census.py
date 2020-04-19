@@ -18,10 +18,15 @@ reader = csv.reader(file_obj)
 counties_list = []
 income_list = []
 insurance_list = []
-tuple_list = []
 counties = []
 income = []
 insurance = []
+
+#cur.execute("DROP TABLE IF EXISTS Census")
+cur.execute("CREATE TABLE IF NOT EXISTS Census (county_num INTEGER, County TEXT, Median_Income INTEGER, With_Health_Insurance INTEGER)")
+topnum = len(cur.execute("SELECT * FROM Census").fetchall())
+bottomnum = topnum + 20
+
 for i in reader:
     counties.append(i[1])
     counties_list = counties[2:]
@@ -31,27 +36,16 @@ for i in reader:
     insurance_list = insurance[2:]
 file_obj.close()
 
-cur.execute("CREATE TABLE IF NOT EXISTS Census (county_num INTEGER, County TEXT, Median_Income INTEGER, With_Health_Insurance INTEGER)")
-count = 0
-for i in range(len(counties_list)):
-
-    if count > 20 :
-        print('Stored 20 items, restart to retrieve more')
-        break
-
-    county_num = i
-
-    # write something so that duplicate data isnt stored
-    # try:
-    #     data = cur.fetchone()[0]
-    #     print("Found in database ",address)
-    #     continue
-    # except:
-    #     pass
-
-    cur.execute("INSERT INTO Census (county_num, County, Median_Income, With_Health_Insurance) VALUES (?,?,?,?)",(county_num, counties_list[i], income_list[i], insurance_list[i]))
+x = 1
+y = 0
+for i in counties_list[topnum:bottomnum]:
     
-    count = count + 1
+    county_num = topnum + x
+    indexer = topnum + y 
+   
+    cur.execute("INSERT INTO Census (county_num, County, Median_Income, With_Health_Insurance) VALUES (?,?,?,?)",(county_num, i, income_list[indexer], insurance_list[indexer]))
+    
+    x = x + 1; y = y + 1
 
 conn.commit()
 
