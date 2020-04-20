@@ -49,5 +49,43 @@ for i in counties_list[topnum:bottomnum]:
 
 conn.commit()
 
-# second table w shared key?
-# cur.execute("CREATE TABLE IF NOT EXISTS
+# second table w shared key
+#cur.execute("DROP TABLE IF EXISTS Insurance")
+cur.execute("CREATE TABLE IF NOT EXISTS Insurance (County TEXT, With_Coverage INTEGER, Private_Health_Insurance INTEGER, Public_Health_Insurance INTEGER, No_Coverage INTEGER)")
+top = len(cur.execute("SELECT * FROM Insurance").fetchall())
+bottom = top + 20
+
+fle_obj = open("census_data.csv", "r") 
+read = csv.reader(fle_obj)
+wc = []
+with_coverage = []
+priv = []
+private = []
+pub =[]
+public = []
+nc = []
+no_coverage = []
+
+for i in read:
+    wc.append(i[382])
+    priv.append(i[386])
+    pub.append(i[390])
+    nc.append(i[394])
+    with_coverage = wc[2:]
+    private = priv[2:]
+    public = pub[2:]
+    no_coverage = nc[2:]
+fle_obj.close()
+
+#import pdb; pdb.set_trace()
+
+z = 0
+for i in counties_list[top:bottom]:
+    
+    index = top + z 
+   
+    cur.execute("INSERT INTO Insurance (County, With_Coverage, Private_Health_Insurance, Public_Health_Insurance, No_Coverage) VALUES (?,?,?,?,?)",(i, with_coverage[index], private[index], public[index], no_coverage[index]))
+
+    z  = z + 1
+
+conn.commit()
