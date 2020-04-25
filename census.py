@@ -13,7 +13,7 @@ cur = conn.cursor()
 
 # reads from data and adds data to the database
 
-file_obj = open("census_data.csv", "r") 
+file_obj = open("census2010.csv", "r") 
 reader = csv.reader(file_obj)
 counties_list = []
 income_list = []
@@ -23,9 +23,15 @@ income = []
 insurance = []
 
 #cur.execute("DROP TABLE IF EXISTS Census")
-cur.execute("CREATE TABLE IF NOT EXISTS Census (county_num INTEGER, County TEXT, Median_Income INTEGER, With_Health_Insurance INTEGER)")
+cur.execute("CREATE TABLE IF NOT EXISTS Census (county_num INTEGER, County TEXT, State TEXT, Median_Income INTEGER, With_Health_Insurance INTEGER)")
+
+# the number of items in the table already
 topnum = len(cur.execute("SELECT * FROM Census").fetchall())
+# the number of items in the table + 20 
 bottomnum = topnum + 20
+
+state_list = []
+final_county_list = []
 
 for i in reader:
     counties.append(i[1])
@@ -34,16 +40,26 @@ for i in reader:
     income_list = income[2:]
     insurance.append(i[382])
     insurance_list = insurance[2:]
+
+    for item in counties_list:
+        state = item.split(',')[-1]
+        state_list.append(state)
+        county = item.split(',')[0]
+        final_county_list.append(county)
+        #import pdb; pdb.set_trace()
+    
 file_obj.close()
 
 x = 1
 y = 0
+
+# # to only add 20 at a time, only loop from the count of last item in the table to the item that is 20 counts away
 for i in counties_list[topnum:bottomnum]:
     
     county_num = topnum + x
     indexer = topnum + y 
    
-    cur.execute("INSERT INTO Census (county_num, County, Median_Income, With_Health_Insurance) VALUES (?,?,?,?)",(county_num, i, income_list[indexer], insurance_list[indexer]))
+    cur.execute("INSERT INTO Census (county_num, County, State, Median_Income, With_Health_Insurance) VALUES (?,?,?,?,?)",(county_num, final_county_list[indexer], state_list[indexer], income_list[indexer], insurance_list[indexer]))
     
     x = x + 1; y = y + 1
 
@@ -51,11 +67,11 @@ conn.commit()
 
 # second table w shared key
 #cur.execute("DROP TABLE IF EXISTS Insurance")
-cur.execute("CREATE TABLE IF NOT EXISTS Insurance (County TEXT, With_Coverage INTEGER, Private_Health_Insurance INTEGER, Public_Health_Insurance INTEGER, No_Coverage INTEGER)")
+cur.execute("CREATE TABLE IF NOT EXISTS Insurance (county_num INTEGER, With_Coverage INTEGER, Private_Health_Insurance INTEGER, Public_Health_Insurance INTEGER, No_Coverage INTEGER)")
 top = len(cur.execute("SELECT * FROM Insurance").fetchall())
 bottom = top + 20
 
-fle_obj = open("census_data.csv", "r") 
+fle_obj = open("census2010.csv", "r") 
 read = csv.reader(fle_obj)
 wc = []
 with_coverage = []
@@ -79,13 +95,16 @@ fle_obj.close()
 
 #import pdb; pdb.set_trace()
 
+a = 1
 z = 0
 for i in counties_list[top:bottom]:
     
+    county_num = top + a
     index = top + z 
    
-    cur.execute("INSERT INTO Insurance (County, With_Coverage, Private_Health_Insurance, Public_Health_Insurance, No_Coverage) VALUES (?,?,?,?,?)",(i, with_coverage[index], private[index], public[index], no_coverage[index]))
+    cur.execute("INSERT INTO Insurance (county_num, With_Coverage, Private_Health_Insurance, Public_Health_Insurance, No_Coverage) VALUES (?,?,?,?,?)",(county_num, with_coverage[index], private[index], public[index], no_coverage[index]))
 
-    z  = z + 1
+    z  = z + 1; a = a + 1
 
 conn.commit()
+
