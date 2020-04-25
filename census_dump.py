@@ -28,8 +28,6 @@ for row in cur:
 fhand = codecs.open('compare_census.txt', 'w', "utf-8")
 fhand.write("myData = [\n")
     
-
-#import pdb; pdb.set_trace()
 count = 0
 for i in range(len(income_list)):
     count = count + 1
