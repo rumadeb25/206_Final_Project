@@ -1,11 +1,6 @@
-import unittest
+import matplotlib 
+import matplotlib.pyplot as plt
 import sqlite3
-import json
-import os
-
-from bs4 import BeautifulSoup
-import requests
-import re
 import csv
 import codecs
 
@@ -21,8 +16,8 @@ for row in cur:
     if state == " Alabama":
         alabama_income.append(row[3])
         alabama_coverage.append(row[4])
-#import pdb; pdb.set_trace()
 
+# write data to alabama text file 
 fhand = codecs.open('alabama.txt', 'w', "utf-8")
 fhand.write("AlabamaData = [\n")
     
@@ -38,6 +33,7 @@ fhand.write("\n];\n")
 fhand.close()
 
 
+
 # compare average income and health coverage per county in Michigan
 cur.execute("SELECT * FROM Census")
 michigan_income = []
@@ -47,8 +43,8 @@ for row in cur:
     if state == " Michigan":
         michigan_income.append(row[3])
         michigan_coverage.append(row[4])
-#import pdb; pdb.set_trace()
 
+# write data to michigan text file 
 fhand = codecs.open('michigan.txt', 'w', "utf-8")
 fhand.write("MichiganData = [\n")
     
@@ -66,31 +62,42 @@ fhand.close()
 cur.close()
 
 
-# compare average income and health coverage per county/state 
 
-# cur.execute("SELECT * FROM Census")
-# income_list = []
-# coverage_list = []
-# for row in cur:
-#     income_data = row[3]
-#     income_list.append(income_data)
-# cur.execute("SELECT * FROM Insurance")
-# for row in cur:
-#     coverage_data = row[1]
-#     coverage_list.append(coverage_data)
-
-# fhand = codecs.open('compare_census.txt', 'w', "utf-8")
-# fhand.write("myData = [\n")
+# scatterplot for Alabama
+with open('alabama.txt') as f:
+    lines = f.readlines()
+    income = [line.split(',')[0] for line in lines[1:-1]]
+    coverage = [line.split(',')[1] for line in lines[1:-1]]
+    coverage = list(map(str.strip, coverage))
+    #import pdb; pdb.set_trace()
     
-# count = 0
-# for i in range(len(income_list)):
-#     count = count + 1
-#     if count > 1:
-#         fhand.write("\n")    
-#     output = str(income_list[i])+","+str(coverage_list[i])
-#     fhand.write(output)
+plt.figure()
+plt.scatter(income, coverage)
+plt.xlabel("Median Income")
+plt.ylabel("Num People with Insurance Coverage")
+plt.title('2010 Census Data Comparing Median Income and Insured Averages in Alabama')
+f.close()
 
-# fhand.write("\n];\n")
 
-# cur.close()
-# fhand.close()
+
+# scatterplot for Michigan
+with open('michigan.txt') as f:
+    lines = f.readlines()
+    income = [line.split(',')[0] for line in lines[1:-1]]
+    coverage = [line.split(',')[1] for line in lines[1:-1]]
+    coverage = list(map(str.strip, coverage))
+    #import pdb; pdb.set_trace()
+    
+plt.figure()
+plt.scatter(income, coverage)
+plt.xlabel("Median Income")
+plt.ylabel("Num People with Insurance Coverage")
+plt.title('2010 Census Data Comparing Median Income and Insured Averages in Michigan')
+f.close()
+
+plt.show()
+
+
+
+
+
