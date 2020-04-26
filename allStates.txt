@@ -1,0 +1,21 @@
+StatesData = [
+
+ Alabama,70028,133628
+ California,100599,1172484
+ Florida,83378,368853
+ Georgia,78747,209279
+ Illinois,85259,475290
+ Indiana,73503,156263
+ Michigan,76400,219446
+ New Jersey,111581,402442
+ New York,84334,278687
+ North Carolina,72850,202239
+ Ohio,79241,336577
+ Pennsylvania,76540,255665
+ South Carolina,72687,186594
+ Tennessee,76882,206897
+ Texas,82622,390955
+ Virginia,101308,191896
+ Washington,83410,325722
+ Wisconsin,82861,146776
+];
