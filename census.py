@@ -13,7 +13,7 @@ cur = conn.cursor()
 
 # reads from data and adds data to the database
 
-file_obj = open("census2010.csv", "r") 
+file_obj = open("census_data.csv", "r") 
 reader = csv.reader(file_obj)
 counties_list = []
 income_list = []
@@ -35,18 +35,19 @@ final_county_list = []
 
 for i in reader:
     counties.append(i[1])
-    counties_list = counties[2:]
+    counties_list = counties[2:-1]
     income.append(i[250])
-    income_list = income[2:]
+    income_list = income[2:-1]
     insurance.append(i[382])
-    insurance_list = insurance[2:]
+    insurance_list = insurance[2:-1]
 
-    for item in counties_list:
-        state = item.split(',')[-1]
-        state_list.append(state)
-        county = item.split(',')[0]
-        final_county_list.append(county)
-        #import pdb; pdb.set_trace()
+for item in counties_list:
+    split = item.split(',')
+    county = split[0]
+    state = split[1]
+    final_county_list.append(county)
+    state_list.append(state)
+#import pdb; pdb.set_trace()
     
 file_obj.close()
 
@@ -71,7 +72,7 @@ cur.execute("CREATE TABLE IF NOT EXISTS Insurance (county_num INTEGER, With_Cove
 top = len(cur.execute("SELECT * FROM Insurance").fetchall())
 bottom = top + 20
 
-fle_obj = open("census2010.csv", "r") 
+fle_obj = open("census_data.csv", "r") 
 read = csv.reader(fle_obj)
 wc = []
 with_coverage = []
