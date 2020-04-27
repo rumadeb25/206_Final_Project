@@ -7,8 +7,7 @@ import codecs
 conn = sqlite3.connect('census.db')
 cur = conn.cursor()
 
-# compare median income and life expectancy per county
-
+# compare life expectancy, median income, and num unemployed per county
 cur.execute("SELECT Life_Expectancy.Female_Life_Expectancy, Life_Expectancy.Male_Life_Expectancy, MedIncome.Median_Income FROM Life_Expectancy JOIN MedIncome ON Life_Expectancy.county_num = MedIncome.county_num")
 joined = cur.fetchall()
 fhand = codecs.open('lifeAndUnemp.txt', 'w', "utf-8")
