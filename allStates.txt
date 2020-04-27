@@ -1,21 +1,36 @@
 StatesData = [
 
- Alabama,70028,133628
- California,100599,1172484
- Florida,83378,368853
- Georgia,78747,209279
- Illinois,85259,475290
- Indiana,73503,156263
- Michigan,76400,219446
- New Jersey,111581,402442
- New York,84334,278687
- North Carolina,72850,202239
- Ohio,79241,336577
- Pennsylvania,76540,255665
- South Carolina,72687,186594
- Tennessee,76882,206897
- Texas,82622,390955
- Virginia,101308,191896
- Washington,83410,325722
- Wisconsin,82861,146776
+ Alabama,71146,137183
+ California,93723,577711
+ Colorado,96493,409240
+ Florida,80557,267663
+ Georgia,71813,162334
+ Illinois,82251,191792
+ Indiana,76001,117752
+ Iowa,81317,155650
+ Kentucky,81784,116186
+ Louisiana,69631,197608
+ Maryland,109997,459869
+ Massachusetts,97907,539110
+ Michigan,77043,265843
+ Minnesota,94599,310750
+ Mississippi,70042,116029
+ New Jersey,103635,367941
+ New Mexico,63265,147472
+ New York,75366,260180
+ North Carolina,73338,267518
+ Ohio,81594,327059
+ Oklahoma,73065,202116
+ Oregon,78192,207062
+ Pennsylvania,79120,214313
+ South Carolina,76508,230998
+ Tennessee,83093,212473
+ Texas,87497,466000
+ Virginia,109821,243966
+ Washington,84431,469388
+ Wisconsin,87269,156019
+ Arkansas,71324,147088
+ Missouri,77668,226746
+ Puerto Rico,36519,116261
+ Arizona,65320,617038
 ];
