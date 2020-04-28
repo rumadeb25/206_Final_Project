@@ -121,14 +121,12 @@ def plotAlabama():
         income = [line.split(',')[0] for line in lines[1:-1]]
         coverage = [line.split(',')[1] for line in lines[1:-1]]
         coverage = list(map(str.strip, coverage))
-    plt.figure()
-    plt.scatter(income, coverage)
-    plt.xlabel("Median Income")
-    plt.ylabel("Num People with Insurance Coverage")
-    plt.title('2010 Census Data Comparing Median Income and Insured Averages in Alabama')
+    fig = px.scatter(x = income, y = coverage, labels={'x':'Per Capita Income', 'y':'Num People with Insurance Coverage'})
+    fig.update_layout(title='Census Data Comparing Median Income and Insured Averages in Alabama')
     f.close()
+    #fig.show()
 
-
+   
 
 # scatterplot for Michigan
 def plotMichigan():
@@ -137,14 +135,12 @@ def plotMichigan():
         income = [line.split(',')[0] for line in lines[1:-1]]
         coverage = [line.split(',')[1] for line in lines[1:-1]]
         coverage = list(map(str.strip, coverage))
-    plt.figure()
-    plt.scatter(income, coverage)
-    plt.xlabel("Median Income")
-    plt.ylabel("Num People with Insurance Coverage")
-    plt.title('2010 Census Data Comparing Median Income and Insured Averages in Michigan')
+    fig = px.scatter(x = income, y = coverage, labels={'x':'Per Capita Income', 'y':'Num People with Insurance Coverage'})
+    fig.update_layout(title='Census Data Comparing Median Income and Insured Averages in Michigan')
     f.close()
+    #fig.show()
 
-# plt.show()
+
 
 def main():
     states()
