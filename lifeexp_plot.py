@@ -35,6 +35,34 @@ def lifeAndUnemployment():
 
 
 
+# plot for life expectancy, median income per county
+def plotLifeAndIncome():
+    with open('lifeAndUnemp.txt') as f:
+        lines = f.readlines()
+        avgLife = []
+        female = [line.split(',')[0] for line in lines[2:-1]]
+        male = [line.split(',')[1] for line in lines[2:-1]]
+        
+        femaleFloat = []
+        for item in female:
+            femaleFloat.append(float(item))
+        maleFloat = []
+        for item2 in male:
+            maleFloat.append(float(item2))
+        
+        avgLife = []
+        for i in range(len(femaleFloat)):
+            avgLife.append((femaleFloat[i] + maleFloat[i]) / 2)
+            
+        income = [line.split(',')[2] for line in lines[2:-1]]
+        income = list(map(str.strip, income))
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=avgLife, y=income, mode='markers', name = 'female'))
+    fig.update_layout(title='Comparing Life Expectancies and Median Income per County', xaxis_title='Life Expectancy in Years', yaxis_title='Median Income')
+    fig.show()
+    f.close()
+
+
 # writing to txt file for life exp female, male, insurance per county
 def lifeAndCoverage():
     cur.execute("SELECT Life_Expectancy.Female_Life_Expectancy, Life_Expectancy.Male_Life_Expectancy, Census.With_Health_Insurance FROM Census JOIN Life_Expectancy ON Census.County = Life_Expectancy.County")
@@ -55,6 +83,7 @@ def lifeAndCoverage():
     fhand.close()
 
     cur.close()
+
 
 
 # plot for life exp female, male, insurance per county
@@ -79,5 +108,6 @@ def main():
     lifeAndUnemployment()
     lifeAndCoverage()
     plotLifeAndCoverage()
+    plotLifeAndIncome()
 if __name__ == '__main__':
     main()
